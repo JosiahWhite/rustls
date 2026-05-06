@@ -517,6 +517,12 @@ fn emit_client_hello_for_retry(
             true => Some(CertificateStatusRequest::build_ocsp()),
             false => None,
         },
+        max_fragment_length: config.max_fragment_size.and_then(|size| match size {
+            0..=1023 => Some(crate::msgs::MaxFragmentLength::L512),
+            1024..=2047 => Some(crate::msgs::MaxFragmentLength::L1024),
+            2048..=4095 => Some(crate::msgs::MaxFragmentLength::L2048),
+            _ => Some(crate::msgs::MaxFragmentLength::L4096),
+        }),
         // offer groups which are usable for any offered version
         named_groups: Some(
             config

@@ -10,7 +10,7 @@ use super::codec::{
     Codec, LengthPrefixedBuffer, ListLength, MaybeEmpty, NonEmpty, Reader, SizedPayload,
     TlsListElement, TlsListIter,
 };
-use super::enums::{CertificateStatusType, Compression, ExtensionType, PskKeyExchangeMode};
+use super::enums::{CertificateStatusType, Compression, ExtensionType, MaxFragmentLength, PskKeyExchangeMode};
 use super::handshake::{
     DuplicateExtensionChecker, Encoding, KeyShareEntry, Random, SessionId, SupportedEcPointFormats,
     SupportedProtocolVersions, has_duplicates,
@@ -150,6 +150,10 @@ extension_struct! {
         ExtensionType::ServerName =>
             pub(crate) server_name: Option<ServerNamePayload<'a>>,
 
+        /// Max fragment length (RFC6066)
+        ExtensionType::MaxFragmentLength =>
+            pub(crate) max_fragment_length: Option<MaxFragmentLength>,
+
         /// Certificate status is requested (RFC6066)
         ExtensionType::StatusRequest =>
             pub(crate) certificate_status_request: Option<CertificateStatusRequest>,
@@ -246,6 +250,7 @@ impl ClientExtensions<'_> {
     pub(crate) fn into_owned(self) -> ClientExtensions<'static> {
         let Self {
             server_name,
+            max_fragment_length,
             certificate_status_request,
             named_groups,
             ec_point_formats,
@@ -272,6 +277,7 @@ impl ClientExtensions<'_> {
         } = self;
         ClientExtensions {
             server_name: server_name.map(|x| x.into_owned()),
+            max_fragment_length,
             certificate_status_request,
             named_groups,
             ec_point_formats,

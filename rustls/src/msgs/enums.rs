@@ -2,6 +2,18 @@
 #![allow(non_camel_case_types)]
 
 enum_builder! {
+    /// The `MaxFragmentLength` TLS protocol enum. Values are defined in RFC 6066.
+    /// The `Unknown` item is used when processing unrecognized ordinals.
+    #[repr(u8)]
+    pub enum MaxFragmentLength {
+        L512 => 1,
+        L1024 => 2,
+        L2048 => 3,
+        L4096 => 4,
+    }
+}
+
+enum_builder! {
     /// The `ClientCertificateType` TLS protocol enum.  Values in this enum are taken
     /// from the various RFCs covering TLS, and are listed by IANA.
     /// The `Unknown` item is used when processing unrecognized ordinals.

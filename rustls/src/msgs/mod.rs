@@ -68,7 +68,7 @@ pub(crate) use enums::ECCurveType;
 #[cfg(test)]
 pub(crate) use enums::tests::{test_enum8, test_enum8_display, test_enum16};
 pub(crate) use enums::{
-    AlertLevel, ClientCertificateType, Compression, ExtensionType, KeyUpdateRequest,
+    AlertLevel, ClientCertificateType, Compression, ExtensionType, KeyUpdateRequest, MaxFragmentLength,
 };
 
 mod fragmenter;
